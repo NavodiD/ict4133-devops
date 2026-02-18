@@ -1,7 +1,13 @@
 """
-Student Grade Calculator - CLEAN VERSION
-This demonstrates GOOD code practices with low cyclomatic complexity.
-Cyclomatic Complexity: ~5 (ACCEPTABLE)
+Student Grade Calculator - MESSY VERSION (BACKUP)
+WARNING: This code intentionally demonstrates BAD PRACTICES!
+Use this version to show the RED pipeline failure.
+Cyclomatic Complexity: 33 (TERRIBLE!)
+
+TO USE THIS VERSION:
+1. Run: cp messy_logic_BACKUP.py messy_logic.py
+2. Commit and push to GitHub
+3. Watch the pipeline FAIL with complexity error
 """
 
 
@@ -12,70 +18,109 @@ def calculate_student_grade(score, attendance, assignments_completed,
     """
     Calculate final grade for a student based on multiple criteria.
 
-    This version uses a weighted scoring system instead of nested conditionals.
-    Cyclomatic Complexity: ~5 (GOOD!)
+    WARNING: This function has TERRIBLE cyclomatic complexity (33)!
+    It violates the Single Responsibility Principle and is unmaintainable.
     """
 
-    # Calculate weighted total points
-    total_points = calculate_total_points(
-        score, attendance, assignments_completed,
-        participation, extra_credit, late_submissions,
-        group_project_score, midterm_score, final_exam_score
-    )
+    final_grade = "F"
 
-    # Apply honors bonus if applicable
-    if is_honors_student and total_points >= 90:
-        total_points += 2
+    # Nested if/else hell begins here! (33 decision points)
+    if score >= 90:
+        if attendance >= 90:
+            if assignments_completed >= 15:
+                if participation >= 80:
+                    if extra_credit > 0:
+                        if late_submissions < 2:
+                            if group_project_score >= 85:
+                                if midterm_score >= 80:
+                                    if final_exam_score >= 85:
+                                        if is_honors_student:
+                                            final_grade = "A+"
+                                        else:
+                                            final_grade = "A"
+                                    else:
+                                        if final_exam_score >= 75:
+                                            final_grade = "A-"
+                                        else:
+                                            final_grade = "B+"
+                                else:
+                                    if midterm_score >= 70:
+                                        final_grade = "B+"
+                                    else:
+                                        final_grade = "B"
+                            else:
+                                if group_project_score >= 75:
+                                    final_grade = "B"
+                                else:
+                                    final_grade = "B-"
+                        else:
+                            if late_submissions < 4:
+                                final_grade = "B-"
+                            else:
+                                final_grade = "C+"
+                    else:
+                        if late_submissions == 0:
+                            final_grade = "A-"
+                        else:
+                            final_grade = "B+"
+                else:
+                    if participation >= 60:
+                        final_grade = "B"
+                    else:
+                        final_grade = "B-"
+            else:
+                if assignments_completed >= 12:
+                    final_grade = "B-"
+                else:
+                    final_grade = "C+"
+        else:
+            if attendance >= 75:
+                final_grade = "B-"
+            else:
+                final_grade = "C"
+    else:
+        if score >= 80:
+            if attendance >= 85:
+                if assignments_completed >= 14:
+                    final_grade = "B+"
+                else:
+                    final_grade = "B"
+            else:
+                if attendance >= 70:
+                    final_grade = "B-"
+                else:
+                    final_grade = "C+"
+        else:
+            if score >= 70:
+                if attendance >= 80:
+                    if participation >= 70:
+                        final_grade = "C+"
+                    else:
+                        final_grade = "C"
+                else:
+                    if attendance >= 60:
+                        final_grade = "C"
+                    else:
+                        final_grade = "C-"
+            else:
+                if score >= 60:
+                    if attendance >= 70:
+                        final_grade = "D+"
+                    else:
+                        if attendance >= 50:
+                            final_grade = "D"
+                        else:
+                            final_grade = "F"
+                else:
+                    if score >= 50:
+                        if extra_credit > 5:
+                            final_grade = "D"
+                        else:
+                            final_grade = "F"
+                    else:
+                        final_grade = "F"
 
-    # Convert to letter grade using simple lookup
-    return get_letter_grade(total_points)
-
-
-def calculate_total_points(score, attendance, assignments_completed,
-                           participation, extra_credit, late_submissions,
-                           group_project_score, midterm_score,
-                           final_exam_score):
-    """
-    Calculate weighted total points from all components.
-    Cyclomatic Complexity: 1 (EXCELLENT!)
-    """
-    # Weighted scoring system
-    points = (
-        score * 0.40 +  # 40% - Main score
-        attendance * 0.10 +  # 10% - Attendance
-        (assignments_completed / 20) * 100 * 0.15 +  # 15% - Assignments
-        participation * 0.10 +  # 10% - Participation
-        group_project_score * 0.10 +  # 10% - Group project
-        midterm_score * 0.075 +  # 7.5% - Midterm
-        final_exam_score * 0.075  # 7.5% - Final exam
-    )
-
-    # Apply bonuses and penalties
-    points += extra_credit
-    points -= (late_submissions * 2)  # -2 points per late submission
-
-    return points
-
-
-def get_letter_grade(points):
-    """
-    Convert numerical points to letter grade.
-    Cyclomatic Complexity: 1 (EXCELLENT!)
-    """
-    # Grade thresholds - simple lookup table
-    grade_thresholds = [
-        (97, "A+"), (93, "A"), (90, "A-"),
-        (87, "B+"), (83, "B"), (80, "B-"),
-        (77, "C+"), (73, "C"), (70, "C-"),
-        (67, "D+"), (63, "D"), (60, "D-"),
-        (0, "F")
-    ]
-
-    for threshold, grade in grade_thresholds:
-        if points >= threshold:
-            return grade
-
-    return "F"
+    return final_grade
 
 
 # Example usage
@@ -109,18 +154,3 @@ if __name__ == "__main__":
         is_honors_student=False
     )
     print(f"Average student grade: {grade}")
-
-    # Test case 3: Struggling student
-    grade = calculate_student_grade(
-        score=62,
-        attendance=65,
-        assignments_completed=10,
-        participation=55,
-        extra_credit=3,
-        late_submissions=5,
-        group_project_score=68,
-        midterm_score=60,
-        final_exam_score=65,
-        is_honors_student=False
-    )
-    print(f"Struggling student grade: {grade}")

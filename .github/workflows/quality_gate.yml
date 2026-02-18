@@ -37,9 +37,7 @@ jobs:
       
       # Step 5: Run complexity check with strict threshold
       - name: Check Cyclomatic Complexity
-        run: |
-          echo "Running complexity check with max-complexity=5..."
-          flake8 --max-complexity=5 --statistics messy_logic.py
+        run: flake8 --max-complexity=5 messy_logic.py
       
       # Step 6: Check Cyclomatic Complexity for BACKUP file (demonstrate failure)
       - name: Check Complexity of Backup File
