@@ -41,6 +41,12 @@ jobs:
           echo "Running complexity check with max-complexity=5..."
           flake8 --max-complexity=5 --statistics messy_logic.py
       
+      # Step 6: Check Cyclomatic Complexity for BACKUP file (demonstrate failure)
+      - name: Check Complexity of Backup File
+        run: |
+          echo "Running complexity check on messy_logic_BACKUP.py with max-complexity=10..."
+          flake8 --max-complexity=10 --statistics messy_logic_BACKUP.py
+      
       # Step 6: Run full flake8 check (optional - shows other issues too)
       - name: Run Full Code Quality Check
         run: |
